@@ -1,3 +1,8 @@
+#
+
+# 備忘録
+[ropeの更新コードをmegatron-deepspeedに反映させる](codes/2_pretrain/original_codes/rotary_pos_embedding.py)
+
 # LLMの開発レポジトリ(作成中)です
 ## 参考
 - セットアップなど
