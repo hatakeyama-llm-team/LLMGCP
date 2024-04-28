@@ -1,0 +1,4 @@
+input_model_dir: /storage5/checkpoints/multi_node/checkpoint/gpt_13B_tok300B_lr0.0001_min1e-06_w2000M_d193B_cosine_gbs1536_mbs3_g24_z1_pp6_seed1234_rebase/global_step1400
+output_tokenizer_and_model_dir: ../../models/hf/test
+huggingface_name: test
+test_prompt_text: こんにちは､
