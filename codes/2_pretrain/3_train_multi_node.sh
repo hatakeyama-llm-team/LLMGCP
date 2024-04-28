@@ -235,6 +235,7 @@ megatron_options=" \
     --log-validation-ppl-to-tensorboard \
     --ds-sequence-parallel-size ${sp_size} \
     --use-pin-memory \
+    --ffn-hidden-size 17920 \
     --tensorboard-dir ${tensorboard_path}"
 
 #    --use-rotary-position-embeddings \
