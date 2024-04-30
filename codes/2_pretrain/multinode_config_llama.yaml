@@ -30,7 +30,7 @@ hidden_size: 4096
 num_attn_heads: 32
 lr: 2.0e-5
 min_lr: 2.0e-6
-init_std: 0.008
+init_std: 0.02
 NHOSTS: 3
 
 mp_size: 1

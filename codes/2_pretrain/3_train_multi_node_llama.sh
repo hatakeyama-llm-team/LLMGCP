@@ -195,6 +195,9 @@ data_options=" \
 ## offline data analysis&indexing.
 megatron_options=" \
     --override-opt_param-scheduler \
+    --adam_beta1 0.9 \
+    --adam_beta2 0.95 \
+    --adam_eps 1e-08 \
     --tensor-model-parallel-size ${mp_size} \
     --init-method-std ${init_std} \
     --lr-decay-tokens ${lr_decay_tokens} \
@@ -208,6 +211,7 @@ megatron_options=" \
     --num-attention-heads ${num_attn_heads} \
     --seq-length ${seq_len} \
     --max-position-embeddings ${seq_len} \
+    --distributed-backend nccl \ 
     --train-tokens ${train_tokens} \
     --train-samples ${train_samples} \
     --lr ${lr} \
@@ -220,7 +224,6 @@ megatron_options=" \
     --save-interval ${save_interval} \
     --weight-decay 0.1 \
     --clip-grad 1.0 \
-    --hysteresis 2 \
     --num-workers ${num_workers} \
     --bf16 \
     --seed ${seed} \
@@ -236,15 +239,20 @@ megatron_options=" \
     --use-pin-memory \
     --tensorboard-dir ${tensorboard_path} \
     --no-query-key-layer-scaling \
-    --attention-dropout 0 \
-    --hidden-dropout 0 \
+    --layernorm-epsilon 1e-5 \
+    --attention-dropout 0.0 \
+    --hidden-dropout 0.0 \
     --use-rotary-position-embeddings \
     --untie-embeddings-and-output-weights \
     --swiglu \
     --normalization rmsnorm \
     --disable-bias-linear \
+    --no-bias-gelu-fusion \
+    --no-masked-softmax-fusion \
+    --no-position-embedding \
     --num-key-value-heads 8 \
-    --recompute-activations"
+    --recompute-activations  \
+    --recompute-granularity "selective" "
     
 
 #    --use-rotary-position-embeddings \
