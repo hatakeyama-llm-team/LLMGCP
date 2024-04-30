@@ -243,7 +243,7 @@ megatron_options=" \
     --swiglu \
     --normalization rmsnorm \
     --disable-bias-linear \
-    --num-key-value-heads 8 \
+    --num-key-value-heads 8
     --recompute-activations"
     
 

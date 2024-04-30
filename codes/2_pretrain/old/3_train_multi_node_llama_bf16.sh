@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ~/miniconda3/etc/profile.d/conda.sh && conda activate .venv_train
+source ~/miniconda3/etc/profile.d/conda.sh && conda activate new_deepspeed
 
 set -e
 echo "load settings..."
@@ -243,7 +243,7 @@ megatron_options=" \
     --swiglu \
     --normalization rmsnorm \
     --disable-bias-linear \
-    --num-key-value-heads 8 \
+    --num-key-value-heads 8
     --recompute-activations"
     
 
@@ -315,8 +315,8 @@ echo $nodes
 for node in $nodes
 do
   ssh $node "source ~/.bashrc"
-  ssh $node 'source ~/miniconda3/etc/profile.d/conda.sh && conda activate .venv_train'
-  gpu_count=$(ssh ${node} "nvidia-smi --query-gpu=name --format=csv,noheader | wc -l")
+  ssh $node 'source ~/miniconda3/etc/profile.d/conda.sh && conda activate new_deepspeed'
+  gpu_count=$(ssh ${node} "nvidia-smi --query-gpu=name --format=csv,noheader | wc -l") 
   echo "${node} slots=${gpu_count}"
 done > "${hostfile}"
 

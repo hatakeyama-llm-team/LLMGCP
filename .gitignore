@@ -161,7 +161,7 @@ cython_debug/
 
 ucllm_nedo_prod/
 data/*
-Megatron-DeepSpeed
+#Megatron-DeepSpeed
 models
 apex
 wandb
@@ -173,3 +173,4 @@ hostfile_jobid-*
 llm-leaderboard
 slurm-*
 codes/3_finetune/sample_data
+build
