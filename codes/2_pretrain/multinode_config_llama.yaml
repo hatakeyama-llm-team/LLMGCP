@@ -8,7 +8,7 @@
 tokenized_data_path: /storage5/split/split/split/tokenized_text_document
 megatron_deepspeed_dir: Megatron-DeepSpeed
 input_tokenizer_file: /storage5/split/split/split/tokernizer/tokenizer_scale200.model
-output_model_dir: /storage5/checkpoints/multi_node_llama_hatakeyama/
+output_model_dir: /storage5/checkpoints/0501llama/
 save_interval: 1500
 save_interval: 700
 #save_interval: 1000

@@ -195,9 +195,9 @@ data_options=" \
 ## offline data analysis&indexing.
 megatron_options=" \
     --override-opt_param-scheduler \
-    --adam_beta1 0.9 \
-    --adam_beta2 0.95 \
-    --adam_eps 1e-08 \
+    --adam-beta1 0.9 \
+    --adam-beta2 0.95 \
+    --adam-eps 1e-08 \
     --tensor-model-parallel-size ${mp_size} \
     --init-method-std ${init_std} \
     --lr-decay-tokens ${lr_decay_tokens} \
@@ -211,7 +211,7 @@ megatron_options=" \
     --num-attention-heads ${num_attn_heads} \
     --seq-length ${seq_len} \
     --max-position-embeddings ${seq_len} \
-    --distributed-backend nccl \ 
+    --distributed-backend nccl \
     --train-tokens ${train_tokens} \
     --train-samples ${train_samples} \
     --lr ${lr} \
@@ -251,8 +251,8 @@ megatron_options=" \
     --no-masked-softmax-fusion \
     --no-position-embedding \
     --num-key-value-heads 8 \
-    --recompute-activations  \
-    --recompute-granularity "selective" "
+    --recompute-activations \
+    --recompute-granularity 'selective'"
     
 
 #    --use-rotary-position-embeddings \
