@@ -606,6 +606,10 @@ def setup_model_and_optimizer(model_provider_func,
             )
             model.set_data_post_process_func(data_post_process)
         else:
+
+            #0506code
+            #import copy
+            #optimizer_original=copy.deepcopy(optimizer)
             model, optimizer, _, opt_param_scheduler = deepspeed.initialize(
                 model=model[0],
                 optimizer=optimizer,
@@ -636,6 +640,15 @@ def setup_model_and_optimizer(model_provider_func,
             args.iteration = 0
     else:
         model[0].global_steps = student_global_steps
+
+    ###################################
+    # 0506 突然、lrを上げるときは、optimizerを初期化する
+    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
+    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
+    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
+    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
+    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
+    #optimizer=optimizer_original
 
     # We only support local DDP with multiple micro-batches.
     if len(model) > 1 or mpu.get_pipeline_model_parallel_world_size() > 1:
