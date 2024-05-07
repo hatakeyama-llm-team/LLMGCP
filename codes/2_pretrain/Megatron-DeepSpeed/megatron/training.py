@@ -641,15 +641,6 @@ def setup_model_and_optimizer(model_provider_func,
     else:
         model[0].global_steps = student_global_steps
 
-    ###################################
-    # 0506 突然、lrを上げるときは、optimizerを初期化する
-    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
-    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
-    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
-    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
-    #print_rank_0("checkpointを読み込みましたが、オプティマイザを初期化します!!")
-    #optimizer=optimizer_original
-
     # We only support local DDP with multiple micro-batches.
     if len(model) > 1 or mpu.get_pipeline_model_parallel_world_size() > 1:
         assert args.DDP_impl == 'local'
