@@ -99,14 +99,14 @@ class OptimizerParamScheduler(object):
         '''
 
         #途中で学習率を変更する場合
-        self.lr_warmup_tokens=76874617856
+        self.lr_warmup_tokens=78874617856
         self.min_lr=0.0000142
         if self.lr_warmup_tokens > 0 and self.num_tokens <= self.lr_warmup_tokens:
             if self.num_tokens < 74874617856:
                 return self.min_lr
             else:
-                return self.min_lr + (self.max_lr - self.min_lr) * (self.num_tokens - 74874617856) / (self.lr_warmup_tokens - 74874617856)
-
+                return self.min_lr + (0.0002 - self.min_lr) * (self.num_tokens - 74874617856) / (self.lr_warmup_tokens - 74874617856)
+        
         # If the learning rate is constant, just return the initial value.
         if self.lr_decay_style == 'constant':
             return self.max_lr
