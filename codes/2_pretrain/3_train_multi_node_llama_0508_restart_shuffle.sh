@@ -7,11 +7,11 @@ echo "load settings..."
 
 
 # Stores the directory paths as variables.
-megatron_deepspeed_dir=$(yq -r '.megatron_deepspeed_dir' multinode_config_llama.yaml)
-input_tokenizer_file=$(yq -r '.input_tokenizer_file' multinode_config_llama.yaml)
-tokenized_data_path=$(yq -r '.tokenized_data_path' multinode_config_llama.yaml)
-output_model_dir=$(yq -r '.output_model_dir' multinode_config_llama.yaml)
-save_interval=$(yq -e '.save_interval' multinode_config_llama.yaml)
+megatron_deepspeed_dir=$(yq -r '.megatron_deepspeed_dir' multinode_config_llama0508.yaml)
+input_tokenizer_file=$(yq -r '.input_tokenizer_file' multinode_config_llama0508.yaml)
+tokenized_data_path=$(yq -r '.tokenized_data_path' multinode_config_llama0508.yaml)
+output_model_dir=$(yq -r '.output_model_dir' multinode_config_llama0508.yaml)
+save_interval=$(yq -e '.save_interval' multinode_config_llama0508.yaml)
 # Prints the arguments.
 echo "megatron_deepspeed_dir = ${megatron_deepspeed_dir}"
 echo ""
@@ -21,15 +21,15 @@ echo "save_interval = ${save_interval}"
 echo ""
 
 
-model_size=$(yq -e '.model_size' multinode_config_llama.yaml)
-num_layers=$(yq -e '.num_layers' multinode_config_llama.yaml)
-hidden_size=$(yq -e '.hidden_size' multinode_config_llama.yaml)
-num_attn_heads=$(yq -e '.num_attn_heads' multinode_config_llama.yaml)
-global_batch_size=$(yq -e '.global_batch_size' multinode_config_llama.yaml)
-lr=$(yq -e '.lr' multinode_config_llama.yaml)
-min_lr=$(yq -e '.min_lr' multinode_config_llama.yaml)
-init_std=$(yq -e '.init_std' multinode_config_llama.yaml)
-seq_len=$(yq -e '.seq_len' multinode_config_llama.yaml)
+model_size=$(yq -e '.model_size' multinode_config_llama0508.yaml)
+num_layers=$(yq -e '.num_layers' multinode_config_llama0508.yaml)
+hidden_size=$(yq -e '.hidden_size' multinode_config_llama0508.yaml)
+num_attn_heads=$(yq -e '.num_attn_heads' multinode_config_llama0508.yaml)
+global_batch_size=$(yq -e '.global_batch_size' multinode_config_llama0508.yaml)
+lr=$(yq -e '.lr' multinode_config_llama0508.yaml)
+min_lr=$(yq -e '.min_lr' multinode_config_llama0508.yaml)
+init_std=$(yq -e '.init_std' multinode_config_llama0508.yaml)
+seq_len=$(yq -e '.seq_len' multinode_config_llama0508.yaml)
 
 
 echo "Model Size: $model_size"
@@ -49,13 +49,13 @@ train_tokens=$((${train_tokens_in_billion} * 1000 * 1000 * 1000))
 
 
 #1 epoch程度になるようにtoken数を決める
-train_tokens=$(yq -e '.train_tokens' multinode_config_llama.yaml)
+train_tokens=$(yq -e '.train_tokens' multinode_config_llama0508.yaml)
 
 #ここを適当に大きくしすぎると､必要メモリが増えすぎるので注意｡
 ##30000*...とかにすると､RAMが600GB必要､みたいになる
 #train_samples=$(( 300 * 1000 * 1000 * 1000 * 2 / ${seq_len} ))
 
-train_samples=$(yq -e '.train_samples' multinode_config_llama.yaml)
+train_samples=$(yq -e '.train_samples' multinode_config_llama0508.yaml)
 
 ## Another wall-clock time termination condition in minutes. Set it large
 ## enough to avoid undesired early termination.
@@ -69,15 +69,15 @@ exit_duration=300000000000
 ## used, there are more tokens per step. Thus we need to increase warmup tokens
 ## to make sure there are enough warmup steps, which is important for training
 ## stability.
-lr_warmup_tokens_in_million=2000
+lr_warmup_tokens_in_million=1000
 lr_warmup_tokens=$((${lr_warmup_tokens_in_million} * 1000 * 1000))
 ## Here we changed the LR decay tokens to align with total train tokens, since
 ## related works (e.g., https://arxiv.org/abs/2203.15556) find that setting the
 ## learning rate schedule to match the number of training tokens results in the
 ## best final model quality 
 ## lr_decay_tokens_in_billion=${train_tokens_in_billion}
-lr_decay_tokens_in_billion=$(yq -e '.lr_decay_tokens_in_billion' multinode_config_llama.yaml)
-lr_decay_tokens=$(yq -e '.lr_decay_tokens' multinode_config_llama.yaml)
+lr_decay_tokens_in_billion=$(yq -e '.lr_decay_tokens_in_billion' multinode_config_llama0508.yaml)
+lr_decay_tokens=$(yq -e '.lr_decay_tokens' multinode_config_llama0508.yaml)
 lr_decay_style="cosine"
 
 echo "lr_decay tokens, $lr_decay_tokens"
@@ -85,12 +85,12 @@ echo "lr_decay tokens, $lr_decay_tokens"
 ###############################################################################
 ### Parallelism configs
 ## Model parallelism, 1 is no MP
-mp_size=$(yq -e '.mp_size' multinode_config_llama.yaml)
+mp_size=$(yq -e '.mp_size' multinode_config_llama0508.yaml)
 
 ## Pipeline parallelism. To disable PP, set pp_size to 1 and no_pp to true.
 ## Note that currently both curriculum learning and random-LTD are NOT
 ## compatible with pipeline parallelism.
-pp_size=$(yq -e '.pp_size' multinode_config_llama.yaml)
+pp_size=$(yq -e '.pp_size' multinode_config_llama0508.yaml)
 
 # If you plan to use Megatron-DeepSpeed's deepspeed_to_transformers.py to convert
 # the checkpoint from Megatron-DeepSpeed format to Hugging Face Transformers format,
@@ -102,18 +102,18 @@ pp_size=$(yq -e '.pp_size' multinode_config_llama.yaml)
 no_pp="false"
 
 ## ZeRO-based data parallelism, stage=0 will disable ZeRO
-zero_stage=$(yq -e '.zero_stage' multinode_config_llama.yaml)
+zero_stage=$(yq -e '.zero_stage' multinode_config_llama0508.yaml)
 
 ## Total number of GPUs.
 num_gpus_pernode=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
 #num_gpus_pernode=1
 #NHOSTS=1
 
-NHOSTS=$(yq -e '.NHOSTS' multinode_config_llama.yaml)
+NHOSTS=$(yq -e '.NHOSTS' multinode_config_llama0508.yaml)
 num_node="${NHOSTS}"
 num_gpus=$((${num_gpus_pernode} * ${num_node}))
 ## Data parallel size.
-sp_size=$(yq -e '.sp_size' multinode_config_llama.yaml)
+sp_size=$(yq -e '.sp_size' multinode_config_llama0508.yaml)
 ## Data parallel size.
 dp_size=$(( ${num_gpus} / ${pp_size} / ${mp_size} /${sp_size}))
 #dp_size=$(( ${num_gpus} / ${pp_size} / ${mp_size} ))
@@ -128,7 +128,7 @@ echo "dp_size = ${dp_size}"
 ## Reduce it manually if GPU OOM
 #batch_size=$(( ${global_batch_size} / ${dp_size} ))
 
-micro_batch_size=$(yq -e '.micro_batch_size' multinode_config_llama.yaml)
+micro_batch_size=$(yq -e '.micro_batch_size' multinode_config_llama0508.yaml)
 # batch_size=2
 ###############################################################################
 ### Misc configs
@@ -145,7 +145,7 @@ estimated_train_iter=$((${train_tokens} / ${seq_len} / ${global_batch_size}))
 ## Activation checkpointing saves GPU memory, but reduces training speed
 # activation_checkpoint="true"
 #activation_checkpoint="false"
-activation_checkpoint=$(yq -r '.activation_checkpoint' multinode_config_llama.yaml)
+activation_checkpoint=$(yq -r '.activation_checkpoint' multinode_config_llama0508.yaml)
 
 ## Whether or not log optimizer states (norms, max abs values) to tensorboard.
 ## This is not required for training and might save GPU memory when turned off.
@@ -154,9 +154,9 @@ log_optimizer_state="false"
 ### Output and data configs
 current_time=$(date "+%Y.%m.%d_%H.%M.%S")
 host="${HOSTNAME}"
-seed=1234
+seed=4649
 
-num_workers=$(yq -e '.num_workers' multinode_config_llama.yaml)
+num_workers=$(yq -e '.num_workers' multinode_config_llama0508.yaml)
 
 prescale_grad="true"
 jobname="gpt_${model_size}B_tok${train_tokens_in_billion}B"
@@ -193,11 +193,7 @@ data_options=" \
 
 ##########################
 ## 0506 lrをstep23800から上げてみる試行
-lr=0.0003
-
-
-#0508 lrを上げる
-lr=0.0003
+#lr=0.0003
 
 ## If CL is used, make sure to set "--split" the same as what you used during
 ## offline data analysis&indexing.
@@ -235,7 +231,8 @@ megatron_options=" \
     --num-workers ${num_workers} \
     --bf16 \
     --seed ${seed} \
-    --load ${checkpoint_path} \
+    --load /storage5/checkpoints/0501llama/checkpoint/gpt_8B_tok300B_lr2e-05_min2e-06_w2000M_d193B_cosine_gbs1536_mbs3_g24_z1_pp3_seed1234_rebase \
+    --finetune \
     --save ${checkpoint_path} \
     --no-async-tensor-model-parallel-allreduce \
     --use-flash-attn-v2 \

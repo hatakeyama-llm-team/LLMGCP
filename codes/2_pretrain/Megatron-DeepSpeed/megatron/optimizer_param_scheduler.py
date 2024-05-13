@@ -82,8 +82,9 @@ class OptimizerParamScheduler(object):
         """Learning rate decay functions from:
               https://openreview.net/pdf?id=BJYwwY9ll pg. 4"""
 
+
+        """
         # Use linear warmup for the initial part.
-        '''
         if self.lr_warmup_tokens is None:
             if self.lr_warmup_steps > 0 and self.num_steps <= self.lr_warmup_steps:
                 if self.num_steps == self.lr_warmup_steps and \
@@ -96,8 +97,9 @@ class OptimizerParamScheduler(object):
             if self.lr_warmup_tokens > 0 and self.num_tokens <= self.lr_warmup_tokens:
                 return self.max_lr * float(self.num_tokens) / \
                     float(self.lr_warmup_tokens)
-        '''
 
+        """
+        """
         #途中で学習率を変更する場合
         self.lr_warmup_tokens=78874617856
         self.min_lr=0.0000142
@@ -106,7 +108,17 @@ class OptimizerParamScheduler(object):
                 return self.min_lr
             else:
                 return self.min_lr + (0.0002 - self.min_lr) * (self.num_tokens - 74874617856) / (self.lr_warmup_tokens - 74874617856)
-        
+        """ 
+
+        #途中で学習率を変更する場合 0508
+        start_token=99125035008
+        self.lr_warmup_tokens=start_token+4000000000
+        self.min_lr=0.0000108
+        if self.lr_warmup_tokens > 0 and self.num_tokens <= self.lr_warmup_tokens:
+            if self.num_tokens < start_token:
+                return self.min_lr
+            else:
+                return self.min_lr + (0.0003 - self.min_lr) * (self.num_tokens - start_token) / (self.lr_warmup_tokens - start_token)
         # If the learning rate is constant, just return the initial value.
         if self.lr_decay_style == 'constant':
             return self.max_lr

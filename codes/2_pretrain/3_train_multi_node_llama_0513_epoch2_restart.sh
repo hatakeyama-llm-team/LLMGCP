@@ -1,5 +1,18 @@
 #!/bin/bash
 
+#確認項目
+# gpt_dataset.pyでデータセットのシャッフルをonにする 済
+#Megatron-DeepSpeed/megatron/optimizer_param_scheduler.py
+# datasetのindex cacheを削除する
+#schedulerで leraning rateの設定をデフォルトに戻す: これから
+
+#メモ
+#・finetuneというキーワードを入れることで､モデルの重みだけを読み込んで学習をゼロから開始できます
+#・load時のcheckpoint_pathは現在動かしているモデルのパス､save時は"_epoch2"を追記する設定になってます
+#(二回目以降の再開時には､load, saveでパスを一致させる必要あり)
+#・lrのスケジューラーがハードコードされているので､そこは書き換える必要があります｡
+#・databaseのshuffleコードはオンになってます｡一旦､indexファイルを削除して､shuffleした条件でdatasetを作り直します
+
 source ~/miniconda3/etc/profile.d/conda.sh && conda activate .venv_train
 
 set -e
@@ -191,10 +204,6 @@ data_options=" \
     --data-path ${tokenized_data_path} \
     --data-impl mmap"
 
-##########################
-## 0506 lrをstep23800から上げてみる試行
-lr=0.0003
-
 
 #0508 lrを上げる
 lr=0.0003
@@ -236,7 +245,8 @@ megatron_options=" \
     --bf16 \
     --seed ${seed} \
     --load ${checkpoint_path} \
-    --save ${checkpoint_path} \
+    --save ${checkpoint_path}_epoch2 \
+    --finetune \
     --no-async-tensor-model-parallel-allreduce \
     --use-flash-attn-v2 \
     --tensorboard-queue-size 1 \
