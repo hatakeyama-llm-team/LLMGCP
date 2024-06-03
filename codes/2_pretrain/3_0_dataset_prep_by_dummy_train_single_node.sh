@@ -1,4 +1,5 @@
 #!/bin/bash
+#データセット生成のためのダミースクリプト
 
 source ~/miniconda3/etc/profile.d/conda.sh && conda activate .venv_train
 
@@ -87,11 +88,12 @@ echo "lr_decay tokens, $lr_decay_tokens"
 ### Parallelism configs
 ## Model parallelism, 1 is no MP
 mp_size=$(yq -e '.mp_size' multinode_config_llama0601.yaml)
-
+mp_size=1
 ## Pipeline parallelism. To disable PP, set pp_size to 1 and no_pp to true.
 ## Note that currently both curriculum learning and random-LTD are NOT
 ## compatible with pipeline parallelism.
 pp_size=$(yq -e '.pp_size' multinode_config_llama0601.yaml)
+pp_size=1
 
 # If you plan to use Megatron-DeepSpeed's deepspeed_to_transformers.py to convert
 # the checkpoint from Megatron-DeepSpeed format to Hugging Face Transformers format,
@@ -111,6 +113,7 @@ num_gpus_pernode=$(nvidia-smi --query-gpu=name --format=csv,noheader | wc -l)
 #NHOSTS=1
 
 NHOSTS=$(yq -e '.NHOSTS' multinode_config_llama0601.yaml)
+NHOSTS=1
 num_node="${NHOSTS}"
 num_gpus=$((${num_gpus_pernode} * ${num_node}))
 ## Data parallel size.
@@ -251,9 +254,7 @@ megatron_options=" \
     --no-bias-gelu-fusion \
     --no-masked-softmax-fusion \
     --no-position-embedding \
-    --num-key-value-heads 9 \
-    --recompute-activations \
-    --recompute-granularity 'selective'"
+    --num-key-value-heads 8"
     
 
 #    --use-rotary-position-embeddings \

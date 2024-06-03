@@ -13,8 +13,6 @@ save_interval: 1500
 save_interval: 10
 #save_interval: 1000
 
-
-
 #llama3
 model_size: 8
 num_layers: 32
